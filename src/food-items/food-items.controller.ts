@@ -8,6 +8,11 @@ export class FoodItemsController {
 
   @Post()
   async create(@Body() createFoodItemDto: CreateFoodItemDto) {
-    return this.foodItemsService.create(createFoodItemDto);
+    const createdFoodItem = await this.foodItemsService.create(createFoodItemDto);
+    return {
+      statusCode: 201,
+      message: 'Food item created successfully',
+      data: createdFoodItem,
+    };
   }
 }

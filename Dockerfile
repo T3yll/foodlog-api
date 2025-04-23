@@ -1,36 +1,20 @@
-# Étape 1 : Construire l'image à partir d'une image de Node
-FROM node:16 AS builder
+FROM node:18
 
-# Définir le répertoire de travail
+# Définit le répertoire de travail
 WORKDIR /app
 
-# Copier package.json et package-lock.json pour installer les dépendances
+# Copie le package.json et le package-lock.json (si présent)
 COPY package*.json ./
 
-# Installer les dépendances
+# Installe les dépendances
 RUN npm install
 
-# Copier le code source de l'application
-COPY . .
+# Copie le reste de l'application
+COPY src ./src
+COPY tsconfig.json ./
 
-# Compiler l'application NestJS
-RUN npm run build
+# Expose le port sur lequel votre application écoute (par exemple 4000)
+EXPOSE 4000
 
-# Étape 2 : Exécuter l'application en production
-FROM node:16
-
-# Définir le répertoire de travail
-WORKDIR /app
-
-# Copier seulement le répertoire dist et package.json pour garder l'image légère
-COPY --from=builder /app/dist /app/dist
-COPY package*.json ./
-
-# Installer les dépendances en mode production
-RUN npm install --production
-
-# Exposer le port sur lequel l'application écoute
-EXPOSE 3000
-
-# Démarrer l'application en production
-CMD ["npm", "run", "start:prod"]
+# Démarre le serveur de développement avec hot reload
+CMD ["npm", "run", "start:dev"]

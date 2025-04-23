@@ -8,16 +8,16 @@ export class FoodItem {
   @Column()
   name: string;
 
-  @Column()
+  @Column('float')
   calories: number;
 
-  @Column()
+  @Column('float')
   protein: number;
 
-  @Column()
+  @Column('float')
   carbs: number;
 
-  @Column()
+  @Column('float')
   fat: number;
 
   @Column()

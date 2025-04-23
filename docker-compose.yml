@@ -17,12 +17,12 @@ services:
     build: .
     container_name: foodlog-api
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
       DATABASE_URL: "postgres://admin:admin@db:5432/foodlog"
     depends_on:
       - db
-    command: ["npm", "run", "start:prod"]
+    command: npm run dev
 
 volumes:
   postgres_data:
