@@ -17,5 +17,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*.ts"],  // Inclut tous les fichiers TypeScript dans le dossier src
+  "exclude": ["node_modules", "dist"],  // Exclut les dossiers node_modules et dist
+  "compileOnSave": false
 }
