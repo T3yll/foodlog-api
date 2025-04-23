@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { User } from '../users/user.entity';
+import { FoodItem } from '../food-items/food-item.entity';
 
 @Entity()
 export class Meal {
@@ -12,9 +13,10 @@ export class Meal {
   @Column()
   datetime: Date;
 
-  @ManyToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.meals, { eager: true })
   user: User;
 
-  @Column("json")
-  foodItems: any[]; // Liens vers les food items
+  @ManyToMany(() => FoodItem, { eager: true }) // Relation avec FoodItem
+  @JoinTable() // Crée une table de jointure entre Meal et FoodItem
+  foodItems: FoodItem[];
 }
