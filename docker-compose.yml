@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: foodlog-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: foodlog
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: foodlog-api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgres://admin:admin@db:5432/foodlog"
+    depends_on:
+      - db
+    command: ["npm", "run", "start:prod"]
+
+volumes:
+  postgres_data:
