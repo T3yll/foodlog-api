@@ -1,15 +1,33 @@
-import { Controller, Post, Get, Put, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+// src/meals/meals.controller.ts (VERSION CORRIGÉE)
+import { 
+  Controller, 
+  Post, 
+  Get, 
+  Put, 
+  Delete, 
+  Param, 
+  Body, 
+  Query, 
+  UseGuards 
+} from '@nestjs/common';
 import { MealsService } from './meals.service';
 import { CreateMealDto } from './create-meal.dto';
 import { UpdateMealDto } from './update-meal.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../users/user.entity';
 
 @Controller('meals')
+@UseGuards(JwtAuthGuard) // Protection de toutes les routes
 export class MealsController {
   constructor(private readonly mealsService: MealsService) {}
 
   @Post()
-  async create(@Body() createMealDto: CreateMealDto) {
-    const createdMeal = await this.mealsService.create(createMealDto);
+  async create(
+    @Body() createMealDto: CreateMealDto,
+    @CurrentUser() user: User
+  ) {
+    const createdMeal = await this.mealsService.create(createMealDto, user.id);
     return {
       statusCode: 201,
       message: 'Meal created successfully',
@@ -18,8 +36,11 @@ export class MealsController {
   }
 
   @Get()
-  async findAll(@Query('date') date?: string) {
-    const meals = await this.mealsService.findAll(date);
+  async findAll(
+    @CurrentUser() user: User, // User en premier (obligatoire)
+    @Query('date') date?: string // date en second (optionnel)
+  ) {
+    const meals = await this.mealsService.findAll(user.id, date);
     return {
       statusCode: 200,
       message: 'Meals retrieved successfully',
@@ -27,9 +48,27 @@ export class MealsController {
     };
   }
 
+  @Get('stats/:date')
+  async getDayStats(
+    @Param('date') date: string,
+    @CurrentUser() user: User
+  ) {
+    const targetDate = new Date(date);
+    const stats = await this.mealsService.getDayNutritionStats(user.id, targetDate);
+    
+    return {
+      statusCode: 200,
+      message: 'Day nutrition statistics retrieved successfully',
+      data: stats
+    };
+  }
+
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    const meal = await this.mealsService.findOne(id);
+  async findOne(
+    @Param('id') id: number,
+    @CurrentUser() user: User
+  ) {
+    const meal = await this.mealsService.findOne(id, user.id);
     return {
       statusCode: 200,
       message: 'Meal retrieved successfully',
@@ -38,8 +77,12 @@ export class MealsController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateMealDto: UpdateMealDto) {
-    const updatedMeal = await this.mealsService.update(id, updateMealDto);
+  async update(
+    @Param('id') id: number, 
+    @Body() updateMealDto: UpdateMealDto,
+    @CurrentUser() user: User
+  ) {
+    const updatedMeal = await this.mealsService.update(id, updateMealDto, user.id);
     return {
       statusCode: 200,
       message: 'Meal updated successfully',
@@ -48,8 +91,11 @@ export class MealsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
-    await this.mealsService.remove(id);
+  async remove(
+    @Param('id') id: number,
+    @CurrentUser() user: User
+  ) {
+    await this.mealsService.remove(id, user.id);
     return {
       statusCode: 200,
       message: 'Meal deleted successfully',
@@ -60,8 +106,9 @@ export class MealsController {
   async removeFoodItem(
     @Param('mealId') mealId: number,
     @Param('foodItemId') foodItemId: number,
+    @CurrentUser() user: User
   ) {
-    await this.mealsService.removeFoodItem(mealId, foodItemId);
+    await this.mealsService.removeFoodItem(mealId, foodItemId, user.id);
     return {
       statusCode: 200,
       message: `Food item with ID ${foodItemId} removed from meal with ID ${mealId} successfully`,

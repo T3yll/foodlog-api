@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Meal } from './meal.entity';
-import { MealsService } from './meals.service';
 import { MealsController } from './meals.controller';
-import { FoodItemsModule } from 'src/food-items/food-items.module';
+import { MealsService } from './meals.service';
+import { Meal } from './meal.entity';
+import { User } from '../users/user.entity';
+import { FoodItem } from '../food-items/food-item.entity';
+import { NutritionModule } from '../nutrition/nutrition.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Meal]),
-    FoodItemsModule // Import de l'entité Meal pour TypeORM
+    TypeOrmModule.forFeature([Meal, User, FoodItem]), // Ajout de FoodItem
+    NutritionModule,
   ],
-  providers: [MealsService],
   controllers: [MealsController],
-  exports: [TypeOrmModule, MealsService], // Export du service si utilisé ailleurs
+  providers: [MealsService],
+  exports: [MealsService],
 })
 export class MealsModule {}

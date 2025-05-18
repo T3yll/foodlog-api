@@ -1,8 +1,14 @@
-import { FoodItem } from '../food-items/food-item.entity';
+import { IsString, IsNotEmpty, IsDateString, IsArray, IsOptional } from 'class-validator';
 
 export class CreateMealDto {
-  readonly type: string; // petit-déj, déjeuner, dîner...
-  readonly datetime: string; // Format simplifié pour la date
-  readonly userId: number; // ID de l'utilisateur
-  readonly foodItems: FoodItem[]; // Liste complète des FoodItems
+  @IsString()
+  @IsNotEmpty()
+  type: string; // petit-déj, déjeuner, snack, dîner
+
+  @IsDateString()
+  datetime: Date;
+
+  @IsArray()
+  @IsOptional()
+  foodItemIds?: number[]; // IDs des aliments à associer au repas
 }
