@@ -5,24 +5,33 @@ services:
     image: postgres:13
     container_name: foodlog-db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: foodlog
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   app:
     build: .
     container_name: foodlog-api
     ports:
-      - "4000:4000"
-    environment:
-      DATABASE_URL: "postgres://admin:admin@db:5432/foodlog"
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
     depends_on:
-      - db
-    command: npm run dev
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
 
 volumes:
   postgres_data:
