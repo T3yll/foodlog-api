@@ -1,4 +1,3 @@
-// src/meals/meals.controller.ts (VERSION CORRIGÉE)
 import { 
   Controller, 
   Post, 
@@ -18,7 +17,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../users/user.entity';
 
 @Controller('meals')
-@UseGuards(JwtAuthGuard) // Protection de toutes les routes
+@UseGuards(JwtAuthGuard)
 export class MealsController {
   constructor(private readonly mealsService: MealsService) {}
 
@@ -37,8 +36,8 @@ export class MealsController {
 
   @Get()
   async findAll(
-    @CurrentUser() user: User, // User en premier (obligatoire)
-    @Query('date') date?: string // date en second (optionnel)
+    @CurrentUser() user: User,
+    @Query('date') date?: string
   ) {
     const meals = await this.mealsService.findAll(user.id, date);
     return {

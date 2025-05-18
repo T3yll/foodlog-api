@@ -1,4 +1,3 @@
-// src/users/user.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Meal } from '../meals/meal.entity';
 import { DaySummary } from '../day-summary/day-summary.entity';

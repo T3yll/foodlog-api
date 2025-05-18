@@ -1,4 +1,3 @@
-// src/nutrition/nutrition-calculator.service.ts
 import { Injectable } from '@nestjs/common';
 
 export interface UserProfile {

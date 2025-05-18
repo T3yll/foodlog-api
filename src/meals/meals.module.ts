@@ -9,7 +9,7 @@ import { NutritionModule } from '../nutrition/nutrition.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Meal, User, FoodItem]), // Ajout de FoodItem
+    TypeOrmModule.forFeature([Meal, User, FoodItem]),
     NutritionModule,
   ],
   controllers: [MealsController],

@@ -1,4 +1,3 @@
-// src/food-items/food-items.service.ts (mise à jour)
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
