@@ -457,3 +457,61 @@ L'API est maintenant opérationnelle sur `http://localhost:4000` avec :
 - 🍽️ Base de 150+ aliments
 - 📊 Logique métier complète
 - 🧪 Toutes les routes accessibles
+
+
+# 🎯 Validation des Compétences CDA - FoodLog API
+
+> Analyse des compétences du Titre Professionnel Concepteur Développeur d'Applications validées par le projet FoodLog API
+
+## 📊 Résultat Global
+
+**Compétences CDA :** 11/11 ✅  
+**Taux de validation :** **100%** 🎉
+
+---
+
+## ✅ Compétences Validées
+
+### **CCP 1 - Développer une application sécurisée**
+
+| Compétence | Statut | Preuve |
+|------------|---------|---------|
+| **Installer et configurer son environnement** | ✅ | Docker Compose + variables d'environnement |
+| **Développer des interfaces utilisateur** | ✅ | 25+ endpoints REST bien documentés |
+| **Développer des composants métier** | ✅ | Services NestJS + logique nutritionnelle complexe |
+| **Contribuer à la gestion d'un projet** | ✅ | Architecture modulaire + documentation complète |
+
+### **CCP 2 - Concevoir et développer une application organisée en couches**
+
+| Compétence | Statut | Preuve |
+|------------|---------|---------|
+| **Analyser les besoins et maquetter** | ✅ | Documentation fonctionnelle détaillée |
+| **Définir l'architecture logicielle** | ✅ | Architecture multicouche NestJS |
+| **Concevoir une base de données** | ✅ | PostgreSQL + TypeORM + relations complexes |
+| **Développer l'accès aux données** | ✅ | Repository pattern + requêtes optimisées |
+
+### **CCP 3 - Préparer le déploiement d'une application sécurisée**
+
+| Compétence | Statut | Preuve |
+|------------|---------|---------|
+| **Préparer et exécuter les plans de tests** | ✅ | Workflow de test + exemples de validation |
+| **Préparer et documenter le déploiement** | ✅ | Docker Compose + instructions complètes |
+| **Contribuer à la mise en production DevOps** | ✅ | Containerisation + architecture cloud-ready |
+
+---
+
+## 🔒 Sécurité Intégrée
+
+- ✅ **Authentification JWT** avec bcrypt (12 rounds)
+- ✅ **Guards de protection** des routes
+- ✅ **Validation stricte** des données
+- ✅ **Isolation utilisateur** sécurisée
+
+## 🏗️ Points Techniques Clés
+
+- **Docker** : Containerisation complète (API + DB)
+- **NestJS** : Architecture modulaire et scalable
+- **TypeORM** : ORM relationnel avec migrations
+- **PostgreSQL** : Base de données relationnelle
+- **JWT + Bcrypt** : Sécurité authentification
+- **Logique métier** : Calculs BMR/TDEE + suggestions compensatoires
