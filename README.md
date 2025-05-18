@@ -1,98 +1,459 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🥗 FoodLog API - Suivi Nutritionnel Intelligent
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> API REST sécurisée pour le suivi nutritionnel avec authentification JWT, logique métier avancée et suggestions compensatoires automatiques.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Table des matières
 
-## Description
+- [🎯 Présentation du projet](#-présentation-du-projet)
+- [🏗️ Architecture](#️-architecture)
+- [🚀 Installation et lancement](#-installation-et-lancement)
+- [🔐 Authentification](#-authentification)
+- [📊 Logique métier](#-logique-métier)
+- [📝 Documentation des routes](#-documentation-des-routes)
+- [🧪 Test de l'API](#-test-de-lapi)
+- [📁 Structure du projet](#-structure-du-projet)
+- [🎯 Points techniques](#-points-techniques)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🎯 Présentation du projet
 
-## Project setup
+FoodLog est une API complète de suivi nutritionnel permettant aux utilisateurs de :
+- **Suivre leurs repas** avec calculs nutritionnels automatiques
+- **Recevoir des objectifs personnalisés** basés sur leur profil (BMR/TDEE)
+- **Obtenir des suggestions compensatoires** intelligentes
+- **Valider leurs journées** selon des règles métier strictes
 
-```bash
-$ npm install
+### ✨ Fonctionnalités clés
+
+- ✅ **Authentification JWT sécurisée** avec bcrypt (12 rounds)
+- ✅ **Calculs nutritionnels automatiques** (BMR, TDEE, objectifs personnalisés)
+- ✅ **Validation intelligente** des journées nutritionnelles
+- ✅ **Suggestions compensatoires** basées sur les déficits
+- ✅ **Base de données** de 150+ aliments pré-configurés
+- ✅ **Architecture modulaire** NestJS + TypeORM + PostgreSQL
+- ✅ **Isolation des données** par utilisateur
+
+## 🏗️ Architecture
+
+```
+📁 FoodLog API
+├── 🔐 Auth Module (JWT + Passport)
+├── 👤 Users Module (Profils utilisateurs)
+├── 🍽️ Meals Module (Gestion des repas)
+├── 🥘 FoodItems Module (Base d'aliments)
+├── 📊 DaySummary Module (Résumés nutritionnels)
+└── 🧠 Nutrition Module (Logique métier)
 ```
 
-## Compile and run the project
+### 🛠️ Stack technique
+
+- **Backend** : NestJS (Node.js 20)
+- **Base de données** : PostgreSQL 15
+- **ORM** : TypeORM avec relations
+- **Authentification** : JWT + Passport
+- **Validation** : class-validator + class-transformer
+- **Containerisation** : Docker + Docker Compose
+- **Sécurité** : Bcrypt, Guards, Variable d'environnement
+
+## 🚀 Installation et lancement
+
+### Prérequis
+
+- Docker et Docker Compose installés
+- Git installé
+- Ports 4000 et 5432 disponibles
+
+### 1. Clonage du projet
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <repository-url>
+cd foodlog-api
 ```
 
-## Run tests
+### 2. Configuration
+
+Le projet est pré-configuré avec un fichier `.env` :
 
 ```bash
-# unit tests
-$ npm run test
+# Vérifiez que le fichier .env existe
+cat .env
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Variables principales configurées :
+# - DB_HOST=db
+# - DB_PORT=5432
+# - JWT_SECRET=<clé sécurisée>
+# - APP_PORT=4000
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 3. Lancement avec Docker
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Démarrer tous les services
+docker compose up --build
+
+# L'API sera disponible sur http://localhost:4000
+# La base de données sur localhost:5432
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Seeding de la base de données
 
-## Resources
+```bash
+# Dans un nouveau terminal, après que l'API soit démarrée
+docker compose exec app npm run seed
 
-Check out a few resources that may come in handy when working with NestJS:
+# Résultat attendu : 150+ aliments ajoutés automatiquement
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 5. Vérification
 
-## Support
+```bash
+# Test simple de l'API
+curl http://localhost:4000/food-items
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Devrait retourner la liste des aliments
+```
 
-## Stay in touch
+## 🔐 Authentification
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Système d'authentification
 
-## License
+- **JWT tokens** avec expiration (24h par défaut)
+- **Passwords hashés** avec bcrypt (12 rounds)
+- **Protection des routes** via Guards
+- **Validation stricte** des données utilisateur
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Inscription
+
+```bash
+POST /auth/register
+Content-Type: application/json
+
+{
+  "email": "utilisateur@example.com",
+  "password": "motdepasse123",
+  "weight": 70,
+  "height": 175,
+  "age": 25,
+  "sex": "male",
+  "activityLevel": "moderate",
+  "goal": "maintenance"
+}
+```
+
+### Connexion
+
+```bash
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "utilisateur@example.com",
+  "password": "motdepasse123"
+}
+```
+
+**Réponse :**
+```json
+{
+  "statusCode": 200,
+  "message": "Connexion réussie",
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": 1,
+      "email": "utilisateur@example.com",
+      "weight": 70,
+      "height": 175,
+      "age": 25,
+      "sex": "male",
+      "activityLevel": "moderate",
+      "goal": "maintenance"
+    }
+  }
+}
+```
+
+## 📊 Logique métier
+
+### 🧮 Calculs nutritionnels automatiques
+
+1. **BMR (Métabolisme de Base)** - Formule Mifflin-St Jeor
+   - Homme : `10×poids + 6.25×taille - 5×âge + 5`
+   - Femme : `10×poids + 6.25×taille - 5×âge - 161`
+
+2. **TDEE (Dépense Énergétique Totale)** - BMR × Facteur d'activité
+   - Sédentaire : BMR × 1.2
+   - Modéré : BMR × 1.55
+   - Actif : BMR × 1.75
+
+3. **Objectifs personnalisés** selon le goal utilisateur
+   - Maintenance : TDEE
+   - Perte de poids : TDEE × 0.8 (-20%)
+   - Prise de poids : TDEE × 1.15 (+15%)
+
+4. **Répartition des macronutriments**
+   - Protéines : 25% des calories (÷4 pour grammes)
+   - Lipides : 25% des calories (÷9 pour grammes)
+   - Glucides : 50% des calories (÷4 pour grammes)
+
+### ⚠️ Règles de validation
+
+L'API applique des règles strictes de validation nutritionnelle :
+
+- **Refus automatique** si :
+  - Dépassement > 30% des calories cibles
+  - Apport protéique < 70% de l'objectif
+
+- **Statuts des journées** :
+  - `under_goal` : Objectifs non atteints
+  - `balanced` : Objectifs atteints (±10%)
+  - `over_goal` : Léger dépassement (10-30%)
+  - `extreme_over` : Dépassement critique (>30%)
+
+### 🍽️ Système de suggestions compensatoires
+
+L'API génère automatiquement des repas compensatoires intelligents :
+
+- **Analyse des déficits** en calories et protéines
+- **Sélection d'aliments** optimisés nutritionnellement
+- **Calcul des quantités** automatique
+- **Base de données** de 12 aliments compensatoires
+
+**Exemple de suggestion :**
+```json
+{
+  "name": "Repas compensatoire suggéré",
+  "foodItems": [
+    {
+      "name": "Blanc de poulet",
+      "quantity": 100,
+      "unit": "g",
+      "calories": 165,
+      "protein": 31,
+      "carbs": 0,
+      "fat": 4
+    }
+  ],
+  "totalCalories": 165,
+  "totalProtein": 31,
+  "totalCarbs": 0,
+  "totalFat": 4
+}
+```
+
+## 📝 Documentation des routes
+
+### Routes d'authentification
+
+| Méthode | Route | Description | Auth requise |
+|---------|--------|-------------|--------------|
+| POST | `/auth/register` | Inscription d'un utilisateur | ❌ |
+| POST | `/auth/login` | Connexion utilisateur | ❌ |
+| GET | `/auth/profile` | Profil utilisateur connecté | ✅ |
+| PUT | `/auth/profile` | Modification du profil | ✅ |
+| PUT | `/auth/change-password` | Changement de mot de passe | ✅ |
+
+### Routes des aliments
+
+| Méthode | Route | Description | Auth requise |
+|---------|--------|-------------|--------------|
+| GET | `/food-items` | Liste complète des aliments | ❌ |
+| GET | `/food-items/search?q=query` | Recherche d'aliments | ❌ |
+| POST | `/food-items` | Créer un nouvel aliment | ❌ |
+| GET | `/food-items/:id` | Détail d'un aliment | ❌ |
+| PUT | `/food-items/:id` | Modifier un aliment | ❌ |
+| DELETE | `/food-items/:id` | Supprimer un aliment | ❌ |
+
+### Routes des repas
+
+| Méthode | Route | Description | Auth requise |
+|---------|--------|-------------|--------------|
+| POST | `/meals` | Créer un repas | ✅ |
+| GET | `/meals` | Repas de l'utilisateur | ✅ |
+| GET | `/meals?date=YYYY-MM-DD` | Repas par date | ✅ |
+| GET | `/meals/stats/:date` | Statistiques du jour | ✅ |
+| GET | `/meals/:id` | Détail d'un repas | ✅ |
+| PUT | `/meals/:id` | Modifier un repas | ✅ |
+| DELETE | `/meals/:id` | Supprimer un repas | ✅ |
+| DELETE | `/meals/:mealId/food-items/:foodItemId` | Retirer un aliment | ✅ |
+
+### Routes des résumés nutritionnels
+
+| Méthode | Route | Description | Auth requise |
+|---------|--------|-------------|--------------|
+| GET | `/day-summary/:date` | Résumé d'une journée | ✅ |
+| POST | `/day-summary/:date/validate` | Valider une journée | ✅ |
+| GET | `/day-summary/:date/suggestions` | Suggestions compensatoires | ✅ |
+| GET | `/day-summary/goals/calculate` | Calcul des objectifs | ✅ |
+
+## 🧪 Test de l'API
+
+### Workflow de test recommandé
+
+1. **Inscription/Connexion**
+   - Créer un compte utilisateur
+   - Se connecter et récupérer le token JWT
+
+2. **Exploration des aliments**
+   - Lister tous les aliments disponibles
+   - Rechercher des aliments spécifiques
+
+3. **Création de repas**
+   - Créer un petit-déjeuner avec `foodItemIds`
+   - Créer un déjeuner, collation, dîner
+   - Vérifier les associations alimentaires
+
+4. **Analyse nutritionnelle**
+   - Consulter le résumé de la journée
+   - Vérifier les calculs automatiques
+   - Tester les suggestions compensatoires
+
+### Exemples de requêtes
+
+**Création d'un repas :**
+```bash
+POST /meals
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "type": "petit-déjeuner",
+  "datetime": "2025-05-18T08:00:00.000Z",
+  "foodItemIds": [6, 8, 25]
+}
+```
+
+**Résumé nutritionnel :**
+```bash
+GET /day-summary/2025-05-18
+Authorization: Bearer <token>
+```
+
+**Réponse type :**
+```json
+{
+  "statusCode": 200,
+  "message": "Day summary retrieved successfully",
+  "data": {
+    "date": "2025-05-18T00:00:00.000Z",
+    "nutrition": {
+      "totalCalories": 1654,
+      "totalProtein": 121,
+      "totalCarbs": 182,
+      "totalFat": 58
+    },
+    "goals": {
+      "calories": 1850,
+      "protein": 115,
+      "carbs": 231,
+      "fat": 51
+    },
+    "status": "balanced",
+    "isValid": true,
+    "violations": [],
+    "suggestion": null,
+    "mealsCount": 4
+  }
+}
+```
+
+## 📁 Structure du projet
+
+```
+src/
+├── auth/                 # Module d'authentification
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── strategies/       # JWT et Local strategies
+│   │   ├── jwt.strategy.ts
+│   │   └── local.strategy.ts
+│   ├── guards/          # Guards de protection
+│   │   ├── jwt-auth.guard.ts
+│   │   └── local-auth.guard.ts
+│   ├── decorators/      # Décorateurs personnalisés
+│   │   └── current-user.decorator.ts
+│   └── dto/             # DTOs de validation
+│       ├── register.dto.ts
+│       ├── login.dto.ts
+│       └── update-profile.dto.ts
+├── users/               # Gestion des utilisateurs
+│   ├── user.entity.ts
+│   └── users.module.ts
+├── meals/               # Gestion des repas
+│   ├── meal.entity.ts
+│   ├── meals.controller.ts
+│   ├── meals.service.ts
+│   ├── meals.module.ts
+│   └── dto/
+├── food-items/          # Base d'aliments
+│   ├── food-item.entity.ts
+│   ├── food-items.controller.ts
+│   ├── food-items.service.ts
+│   ├── food-items.module.ts
+│   └── dto/
+├── day-summary/         # Résumés nutritionnels
+│   ├── day-summary.entity.ts
+│   ├── day-summary.controller.ts
+│   └── day-summary.module.ts
+├── nutrition/           # Logique métier nutritionnelle
+│   ├── nutrition.module.ts
+│   ├── nutrition-calculator.service.ts  # Calculs BMR/TDEE
+│   ├── meal-suggestion.service.ts       # Suggestions compensatoires
+│   └── day-validation.service.ts        # Validation journées
+└── database/
+    ├── seeds/           # Données initiales
+    │   └── food-items.seed.ts
+    └── seed.script.ts   # Script de seeding
+```
+
+## 🎯 Points techniques
+
+### Fonctionnalités avancées
+
+✅ **Architecture modulaire** avec séparation claire des responsabilités  
+✅ **Authentification sécurisée** JWT + bcrypt avec stratégies Passport  
+✅ **Base de données relationnelle** avec TypeORM et migrations  
+✅ **Validation stricte** des données avec class-validator  
+✅ **Variables d'environnement** pour la configuration  
+✅ **Containerisation complète** avec Docker Compose  
+✅ **Logs structurés** et gestion d'erreurs appropriée  
+
+### Logique métier complexe
+
+✅ **Calculs nutritionnels** automatiques et personnalisés  
+✅ **Algorithme de validation** avec règles métier strictes  
+✅ **Système de suggestions** basé sur l'analyse des déficits  
+✅ **Auto-mise à jour** des résumés après modifications  
+✅ **Isolation sécurisée** des données par utilisateur  
+✅ **Relations complexes** entre entités (User, Meal, FoodItem)  
+
+### Qualité du code
+
+✅ **TypeScript strict** avec interfaces typées  
+✅ **Pattern Repository** avec services dédiés  
+✅ **Separation of Concerns** entre contrôleurs et services  
+✅ **DTOs de validation** pour toutes les entrées  
+✅ **Guards personnalisés** pour la sécurité  
+✅ **Seeding automatisé** pour les données de test  
+
+---
+
+## 🚀 Démarrage rapide
+
+```bash
+# 1. Cloner et démarrer
+git clone <repository-url>
+cd foodlog-api
+docker compose up --build
+
+# 2. Seeding des données (nouveau terminal)
+docker compose exec app npm run seed
+
+# 3. Tester l'API
+curl http://localhost:4000/food-items
+```
+
+L'API est maintenant opérationnelle sur `http://localhost:4000` avec :
+- 🔐 Authentification JWT fonctionnelle
+- 🍽️ Base de 150+ aliments
+- 📊 Logique métier complète
+- 🧪 Toutes les routes accessibles
