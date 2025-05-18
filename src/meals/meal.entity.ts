@@ -16,7 +16,7 @@ export class Meal {
   @ManyToOne(() => User, user => user.meals, { eager: true })
   user: User;
 
-  @ManyToMany(() => FoodItem, { eager: true }) // Relation avec FoodItem
-  @JoinTable() // Crée une table de jointure entre Meal et FoodItem
+  @ManyToMany(() => FoodItem, { eager: true })
+  @JoinTable()
   foodItems: FoodItem[];
 }

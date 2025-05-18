@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
-import { DaySummaryService } from './day-summary.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DaySummaryController } from './day-summary.controller';
+import { DaySummary } from './day-summary.entity';
+import { NutritionModule } from '../nutrition/nutrition.module';
 
 @Module({
-  providers: [DaySummaryService],
-  controllers: [DaySummaryController]
+  imports: [
+    TypeOrmModule.forFeature([DaySummary]),
+    NutritionModule,
+  ],
+  controllers: [DaySummaryController],
+  providers: [],
+  exports: [],
 })
 export class DaySummaryModule {}

@@ -1,4 +1,5 @@
-FROM node:18
+# Utilisation de Node 20 au lieu de 18 pour corriger l'erreur crypto
+FROM node:20
 
 # Définit le répertoire de travail
 WORKDIR /app
@@ -13,8 +14,14 @@ RUN npm install
 COPY src ./src
 COPY tsconfig.json ./
 
-# Expose le port sur lequel votre application écoute (par exemple 4000)
+# Copie le fichier .env pour les variables d'environnement
+COPY .env ./
+
+# Expose le port sur lequel votre application écoute
 EXPOSE 4000
+
+# Variable d'environnement pour indiquer qu'on est en développement
+ENV NODE_ENV=development
 
 # Démarre le serveur de développement avec hot reload
 CMD ["npm", "run", "start:dev"]
