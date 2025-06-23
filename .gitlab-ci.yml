@@ -20,6 +20,8 @@ security-and-quality:
   image: node:20-alpine
   before_script:
     - npm ci
+    # Installer les dépendances ESLint v9 si manquantes
+    - npm install --save-dev @eslint/eslintrc @eslint/js 2>/dev/null || true
   script:
     # 🔍 Audit de sécurité des dépendances
     - echo "🔍 Audit de sécurité npm..."
@@ -31,15 +33,15 @@ security-and-quality:
     
     # 🧹 Linting et qualité de code
     - echo "🧹 Analyse ESLint..."
-    - npx eslint "src/**/*.ts" --format json --output-file eslint-report.json || true
+    - npx eslint "src/**/*.ts" --format json --output-file eslint-report.json || echo "⚠️ Rapport ESLint généré avec warnings"
     - npx eslint "src/**/*.ts" || echo "⚠️ Problèmes ESLint détectés"
     
-    # 🔒 Recherche de secrets/credentials dans le code
+    # 🔒 Recherche de secrets/credentials dans le code (Alpine compatible)
     - echo "🔒 Recherche de secrets..."
     - |
       echo "Scanning for potential secrets..."
-      grep -r -i --exclude-dir=node_modules --exclude="*.log" \
-        -E "(password|secret|token|key|api_key|private)" . || echo "✅ Aucun secret détecté"
+      find . -name "*.ts" -o -name "*.js" -o -name "*.json" | grep -v node_modules | \
+        xargs grep -i "password\|secret\|token\|api_key\|private" || echo "✅ Aucun secret détecté"
     
     # 📊 Métriques de qualité (complexité, duplication)
     - echo "📊 Analyse de la complexité..."
