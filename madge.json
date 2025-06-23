@@ -1,0 +1,5 @@
+{
+    "fileExtensions": ["ts"],
+    "exclude": ["**/*.spec.ts", "**/*.e2e-spec.ts"],
+    "tsConfig": "tsconfig.json"
+  }
