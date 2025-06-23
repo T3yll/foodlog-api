@@ -515,3 +515,5 @@ L'API est maintenant opérationnelle sur `http://localhost:4000` avec :
 - **PostgreSQL** : Base de données relationnelle
 - **JWT + Bcrypt** : Sécurité authentification
 - **Logique métier** : Calculs BMR/TDEE + suggestions compensatoires
+
+test
