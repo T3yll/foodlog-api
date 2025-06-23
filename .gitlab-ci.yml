@@ -17,7 +17,7 @@ cache:
 # ========================================
 security-and-quality:
   stage: quality
-  image: node:18-alpine
+  image: node:20-alpine
   before_script:
     - npm ci
   script:
@@ -71,7 +71,7 @@ security-and-quality:
 # ========================================
 test-food-items:
   stage: test
-  image: node:18-alpine
+  image: node:20-alpine
   services:
     - name: postgres:13
       alias: postgres
@@ -97,8 +97,9 @@ test-food-items:
     - until pg_isready -h postgres -p 5432 -U postgres; do sleep 2; done
     - sleep 3
   script:
-    # Lancer uniquement les tests food-items
-    - npm run test food-items
+    # Lancer uniquement les tests food-items avec coverage
+    - npm run test food-items -- --coverage --watchAll=false
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   artifacts:
     when: always
     paths:
