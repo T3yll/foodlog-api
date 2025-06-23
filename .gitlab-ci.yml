@@ -1,0 +1,54 @@
+# 🧪 Pipeline GitLab ultra-simplifié - Tests FoodItems uniquement
+
+stages:
+  - test
+
+# ========================================
+# 📦 CACHE DES DÉPENDANCES
+# ========================================
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules/
+
+# ========================================
+# 🧪 TESTS FOOD-ITEMS
+# ========================================
+test-food-items:
+  stage: test
+  image: node:18-alpine
+  services:
+    - name: postgres:13
+      alias: postgres
+  variables:
+    # Variables PostgreSQL
+    POSTGRES_DB: foodlog_test
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: test_password
+    # Variables de l'app
+    NODE_ENV: test
+    DB_HOST: postgres
+    DB_PORT: 5432
+    DB_USERNAME: postgres
+    DB_PASSWORD: test_password
+    DB_NAME: foodlog_test
+    JWT_SECRET: test-jwt-secret-for-ci-must-be-32-chars-long
+  before_script:
+    # Installer PostgreSQL client
+    - apk add --no-cache postgresql-client
+    # Installer les dépendances
+    - npm ci
+    # Attendre PostgreSQL
+    - until pg_isready -h postgres -p 5432 -U postgres; do sleep 2; done
+    - sleep 3
+  script:
+    # Lancer uniquement les tests food-items
+    - npm run test food-items
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+    expire_in: 1 week
+  only:
+    - master
+    - develop
